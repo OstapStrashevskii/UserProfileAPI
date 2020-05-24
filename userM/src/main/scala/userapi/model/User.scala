@@ -1,7 +1,6 @@
 package userapi.model
 
 import play.api.libs.json.{Json, OFormat}
-import userapi.dto.UserUpdateRequest
 import userapi.utils.{Utils, Validation}
 
 /**

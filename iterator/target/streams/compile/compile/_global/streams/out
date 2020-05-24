@@ -1,0 +1,6 @@
+[0m[[0m[0mdebug[0m] [0m[0mAcquiring lock on file /home/benderbej/projects/HKRANK/Vtb/project/target/.sbt-compilation-infos/iterator-compile/.sbt-idea-lock ...[0m
+[0m[[0m[33mwarn[0m] [0m[0m/home/benderbej/projects/HKRANK/Vtb/iterator/src/main/scala/iterator/Main.scala:41:22: non-variable type argument Object in type pattern Iterator[Object] is unchecked since it is eliminated by erasure[0m
+[0m[[0m[33mwarn[0m] [0m[0m          case iter: Iterator[Object] =>[0m
+[0m[[0m[33mwarn[0m] [0m[0m                     ^[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
+[0m[[0m[0mdebug[0m] [0m[0mReleasing lock on file /home/benderbej/projects/HKRANK/Vtb/project/target/.sbt-compilation-infos/iterator-compile/.sbt-idea-lock.[0m

@@ -1,9 +1,7 @@
 package userapi.dao
 
-import akka.actor.Status.Success
-import akka.http.scaladsl.unmarshalling.Unmarshal
 import userapi.dto.{UserCreateRequest, UserUpdateRequest}
-import userapi.model.{Age, Email, Name, PhoneNum, Surname, User, UserCreateException}
+import userapi.model.{ User, UserCreateException}
 
 import scala.concurrent.{ExecutionContext, Future}
 
