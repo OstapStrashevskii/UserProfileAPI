@@ -1,6 +1,8 @@
-package usermodel.dao
+package userapi.dao
 
 import com.redis.RedisClient
+
+import scala.concurrent.ExecutionContext
 
 class RedisDataSource {
 

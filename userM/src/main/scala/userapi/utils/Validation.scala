@@ -1,10 +1,10 @@
-package usermodel.utils
+package userapi.utils
 
 object Validation {
   def paramsValidate(name: String, surName: String, age: Int, phoneNum: List[String], email: List[String]): Boolean = {
     validateAge(age) &&
     validateName(name) &&
-    validateSurName(surName) &&
+    validateSurName(surName)
     validateEmailList(email) &&
     validatePhoneList(phoneNum)
   }
@@ -13,8 +13,8 @@ object Validation {
     age < 120 && age > 5
   }
 
-  def validatePhone(phone: String): Boolean = {//todo correct regex
-    phone.matches("^[^@]+@[^\\.]+\\..+$")
+  def validatePhone(phone: String): Boolean = {//0771234567  +0771234567
+    phone.matches("^[0-9\\-\\+]{9,15}$")
   }
 
   def validatePhoneList(phoneList: List[String]): Boolean = {
@@ -24,6 +24,7 @@ object Validation {
   def validateEmail(email: String): Boolean = {
     email.matches("^[^@]+@[^\\.]+\\..+$")
   }
+
 
   def validateEmailList(email: List[String]): Boolean = {
     email.nonEmpty &&
@@ -35,6 +36,6 @@ object Validation {
   }
 
   def validateSurName(surName: String): Boolean = {
-    surName.matches("^[a-zA-Z]+$") &&
+    surName.matches("^[a-zA-Z]+$")
   }
 }

@@ -20,18 +20,33 @@ val akkaHttpJson = "de.heikoseeberger" %% "akka-http-play-json" % akkaHttpJsonVe
 val logger = "com.typesafe.scala-logging" %% "scala-logging" % loggerVersion
 val logBack = "ch.qos.logback" % "logback-classic" % "1.1.3" % Runtime
 
+
+val scalatest = "org.scalatest" %% "scalatest" % "3.1.1" % Test
+//val scalatest = "org.scalatest" %% "scalatest" % "3.3.0-SNAP2" % Test
+val streamTestkit = "com.typesafe.akka" %% "akka-stream-testkit" % "2.6.5" % Test
+val httpTestkit = "com.typesafe.akka" %% "akka-http-testkit" % "10.2.0-M1" % Test
+val mockito = "org.mockito" % "mockito-all" % "1.10.19" % Test
+
 lazy val redisDependencies = Seq("net.debasishg" %% "redisclient" % redisVersion)
 
 lazy val akkaDependencies = Seq(
   akkaHttp,
-  akkaActorTyped,
-  akkaStream
+//  akkaActorTyped,
+  akkaStream,
+  akkaHttpJson
 )
 
 lazy val projectDependencies = Seq(
-  logger,
-  logBack
+//  logger,
+//  logBack
+)
+
+lazy val testDependencies = Seq(
+  scalatest,
+  streamTestkit,
+  httpTestkit,
+  mockito
 )
 
 lazy val userM =
-  (project in file("userM")).settings(libraryDependencies ++= redisDependencies ++ projectDependencies ++ akkaDependencies :+ playJson)
+  (project in file("userM")).settings(libraryDependencies ++= redisDependencies ++ projectDependencies ++ akkaDependencies ++ testDependencies :+ playJson)

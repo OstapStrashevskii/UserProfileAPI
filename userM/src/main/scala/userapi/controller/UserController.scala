@@ -1,11 +1,12 @@
-package usermodel.controller
+package userapi.controller
 
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, StatusCodes}
 import akka.http.scaladsl.server.Directives.{complete, get, path, _}
 import akka.http.scaladsl.server.Route
-import usermodel.dto.{Request, UserCreateRequest, UserUpdateRequest}
-import usermodel.service.ProfileService
-import usermodel.utils.Validation
+import userapi.dto.{Request, UserCreateRequest, UserUpdateRequest}
+import userapi.service.ProfileService
+import userapi.utils.Validation
+import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 import scala.util.{Failure, Success}
 
@@ -18,22 +19,22 @@ class UserController(profileService: ProfileService) {
       concat(
         put {
           entity(as[UserCreateRequest]) { request =>
-            validate(Validation.paramsValidate(request.name, request.surName, request.age,request.phoneNum,request.email), InappropriateParams){
+//            validate(Validation.paramsValidate(request.name, request.surName, request.age,request.phoneNum,request.email), InappropriateParams){//todo - possible akka validation
               onComplete(profileService.createUser(request)) {
-                case Success(_)   => complete(StatusCodes.NoContent)
+                case Success(user)   => complete(user)
                 case Failure(exc) => complete(StatusCodes.InternalServerError, exc.getMessage)
-              }
+//              }
             }
           }
         },
-        put {
+        post {
           entity(as[UserUpdateRequest]) { request =>
-            validate(Validation.paramsValidate(request.name, request.surName, request.age,request.phoneNum,request.email), InappropriateParams){
+//            validate(Validation.paramsValidate(request.name, request.surName, request.age,request.phoneNum,request.email), InappropriateParams){//todo - possible akka validation
               onComplete(profileService.updateUser(request)) {
-                case Success(_)   => complete(StatusCodes.NoContent)
+                case Success(user)   => complete(user)
                 case Failure(exc) => complete(StatusCodes.InternalServerError, exc.getMessage)
               }
-            }
+//            }
           }
         })
     }

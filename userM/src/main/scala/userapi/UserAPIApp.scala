@@ -1,13 +1,13 @@
-package usermodel
+package userapi
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives.handleRejections
 import akka.http.scaladsl.server.Route
 import akka.stream.Materializer
-import usermodel.controller.UserController
-import usermodel.dao.{RedisDataSource, UserDao}
-import usermodel.service.{ProfileService, UserService}
+import userapi.controller.UserController
+import userapi.dao.{RedisDataSource, UserDao}
+import userapi.service.{ProfileService, UserService}
 
 import scala.concurrent.{ExecutionContextExecutor, Future}
 
@@ -37,14 +37,14 @@ object UserAPIApp extends App {
   implicit val materializer: Materializer = Materializer(system)
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
-  val redisDataSource: RedisDataSource = new RedisDataSource
+  val redisDataSource: RedisDataSource = new RedisDataSource()
   val userDao: UserDao = new UserDao(redisDataSource)
   val userService: ProfileService = new UserService(userDao)
 
 
-//  private def getRoute: Route = {
-//      new UserController(userService).route
-//  }
-//
-//  val bindingFuture: Future[Http.ServerBinding] = Http().bindAndHandle(getRoute, "localhost", 8080)
+  private def getRoute: Route = {
+      new UserController(userService).route
+  }
+
+  val bindingFuture: Future[Http.ServerBinding] = Http().bindAndHandle(getRoute, "localhost", 8080)
 }

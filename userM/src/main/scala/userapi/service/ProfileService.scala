@@ -1,7 +1,7 @@
-package usermodel.service
+package userapi.service
 
-import usermodel.dto.{UserCreateRequest, UserUpdateRequest}
-import usermodel.model.User
+import userapi.dto.{UserCreateRequest, UserUpdateRequest}
+import userapi.model.User
 
 import scala.concurrent.Future
 
