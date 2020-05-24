@@ -3,6 +3,7 @@ package userapi.service
 import org.scalatest.WordSpec
 import org.scalatest.concurrent.ScalaFutures
 import play.api.libs.json.{JsValue, Json, OFormat}
+import userapi.model.UserCreateException
 //import userapi.UserAPIApp.userService
 import userapi.controller.UserController
 import userapi.dao.{RedisDataSource, UserDao}
@@ -29,77 +30,49 @@ class Test4 extends WordSpec with Matchers with ScalaFutures with ScalatestRoute
 
   val sRoute =new UserController(userService).route
 
-//  "return a 'PONG!' response for GET requests to /ping" in {
-//    // tests:
-//    Put("/users") ~> sRoute ~> check {
-//      responseAs[String] shouldEqual "PONG!"
-//    }
-//  }
+  val validRequest = UserCreateRequest("John","Doe",100, List("0771234567", "+0771234667"), List("dasdasffff@mail.ru", "dasdasffff@mail.ru"))
+  val wrongNameRequest = UserCreateRequest("","Doe",100, List("0771234567", "+0771234667"), List("dasdasffff@mail.ru", "dasdasffff@mail.ru"))
+  val wrongEmailRequest = UserCreateRequest("John","Doe",100, List("0771234567", "+0771234667"), List("dasdasffff@mail.ru", "dasdasffffmail.ru"))
+  val wrongEmailsQuantityRequest = UserCreateRequest("John","Doe",100, List("0771234567", "+0771234667"), List())
+  val wrongPhoneRequest = UserCreateRequest("John","Doe",100, List("0771234567", "RR+0771234667"), List("dasdasffff@mail.ru", "dasdasffff@mail.ru"))
 
 
-  val jsonRequest = ByteString(
-    s"""
-       |{
-       |	"name": "Jhohn",
-       |	"surName": "ddsad",
-       |	"age": 100,
-       |	"phoneNum": [
-       |		"+0771234567",
-       |		"+0771234667"
-       |		],
-       |	"email": [
-       |		"dasdasffff@mail.ru",
-       |		"dasdasffff@mail.ru"
-       |		]
-       |}
-        """.stripMargin)
-
-
-  val crRequest = UserCreateRequest("John","Doe",100, List("0771234567", "+0771234667"), List("dasdasffff@mail.ru", "dasdasffff@mail.ru"))
-
-  "ffff" when {
-    "dsdsd" should {
-      "adsasdas" in {
-
-        val postRequest = HttpRequest(
-          HttpMethods.PUT,
-          uri = "/users",
-          entity = HttpEntity(MediaTypes.`application/json`, jsonRequest))
-
-          postRequest ~> sRoute ~> check {
-
-//            status.intValue() shouldEqual StatusCodes.InternalServerError
-
-
-
-            whenReady(userService.createUser(crRequest)) {
-              _ shouldBe jsonRequest
+  "userService" when {
+    "should work if valid" should {
+      "in creating user" in {
+            whenReady(userService.createUser(validRequest)) {
+              u =>
+              u.name.namestr shouldBe "John"
             }
-
-//            val e = response.entity.toStrict(expirationTime)
-//            Json.parse(e.)
-//
-//            Json.stringify(Json.toJson(response.entity.toStrict(expirationTime)))
-//            Json.fromJson[User](parseResponseBody(body))
-//        private def parseResponseBody(e: HttpEntity.Strict): JsValue = Json.parse(e.data.utf8String)
-
-
-
-//            status.isSuccess() shouldEqual true
-//            response.entity.toString should be ("!!")
           }
-
-
-//        assert(false)
-
+      }
+    "should fail if not valid" should {
+      "should throw ex if name is not valid" in {
+        whenReady(userService.createUser(wrongNameRequest).failed) {
+          _ shouldBe userapi.model.UserCreateException(" incorrect name")
+        }
+      }
+    }
+    "should fail if not valid" should {
+      "should throw ex if phone is not valid" in {
+        whenReady(userService.createUser(wrongPhoneRequest).failed) {
+          _ shouldBe userapi.model.UserCreateException(" incorrect phone")
+        }
+      }
+    }
+    "should fail if not valid" should {
+      "should throw ex if email is not valid" in {
+        whenReady(userService.createUser(wrongEmailRequest).failed) {
+          _ shouldBe userapi.model.UserCreateException(" incorrect email")
+        }
+      }
+    }
+    "should fail if not valid" should {
+      "should throw ex if no emails provided" in {
+        whenReady(userService.createUser(wrongEmailsQuantityRequest).failed) {
+          _ shouldBe userapi.model.UserCreateException(" incorrect email")
+        }
       }
     }
   }
-
-
-
-
-
-
-
 }
